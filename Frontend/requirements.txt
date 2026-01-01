@@ -1,0 +1,9 @@
+streamlit
+scikit-learn
+pandas
+numpy
+joblib
+#  python -m venv venv
+#.\venv\Scripts\activate
+# pip install streamlit 
+# streamlit run app.py
