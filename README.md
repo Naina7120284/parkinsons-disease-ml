@@ -1,120 +1,64 @@
-# parkinson-prediction
-Parkinson’s Disease Prediction Using ML This application predicts the likelihood of Parkinson’s disease using a trained ML model (Random Forest/ SVM). Features are extracted from voice measurements and processed using a scaler before prediction. The web interface is built with Streamlit for easy and interactive usage.
-# Parkinson's Disease Prediction Project
+# Parkinson's Disease Prediction (ML)
 
-##  **Project Overview**
+Predicts whether a voice recording comes from a person with Parkinson's disease, using
+biomedical voice measurements and a tuned Random Forest classifier. Includes a full Jupyter
+workflow and a Streamlit app for interactive predictions.
 
-Parkinson's Disease is a progressive neurological disorder affecting movement. Early detection can help manage symptoms better. This model uses machine learning algorithms to classify whether a patient is likely to have Parkinson's disease.
+> Educational project — not a medical diagnostic tool.
 
----
-
-## **Features**
-
-* Data preprocessing and cleaning
-* Feature selection and visualization
-* ML model training and testing
-* Accuracy evaluation
-* Streamlit web app interface
-
----
-
-##  **Project Structure**
+## Repository contents
 
 ```
-Parkinson's Prediction/
-│── data/                 # Dataset CSV file
-│── model/                # Trained model files
-│── app.py                # Streamlit deployment file
-│── notebook.ipynb        # Full ML workflow
-│── requirements.txt      # List of dependencies
-│── README.md             # Documentation
+.
+├── Parkinson's Diseases.ipynb        # Full workflow: EDA, preprocessing, model comparison, tuning
+├── Parkinsson disease_Dataset.csv    # Dataset: 195 voice recordings, 22 voice features + status label
+└── Frontend/
+    ├── app.py                        # Streamlit app (loads the trained model and scaler)
+    ├── best_model.pkl                # Trained Random Forest
+    ├── scaler.pkl                    # Feature scaler used in training
+    └── requirements.txt
 ```
 
----
+## Approach
 
-##  **Technologies Used**
+1. **Data:** 195 recordings with features such as fundamental frequency (Fo, Fhi, Flo), jitter,
+   shimmer, NHR/HNR, RPDE, DFA and PPE; `status` = 1 (Parkinson's) or 0 (healthy).
+2. **Preprocessing:** cleaning, feature scaling, train/test split.
+3. **Models compared:** SVM, Decision Tree, Random Forest, Gradient Boosting.
+4. **Tuning:** grid search with 5-fold cross-validation on the Random Forest
+   (best: 300 trees, max depth 7).
 
-* Python 3.x
-* Pandas
-* NumPy
-* Scikit-Learn
-* Streamlit (for UI)
-* Matplotlib / Seaborn
+## Results (held-out test set)
 
----
+| Model | Accuracy | Precision | Recall | F1 |
+|---|---|---|---|---|
+| SVM | 0.881 | 0.911 | 0.932 | 0.921 |
+| Decision Tree | 0.848 | 0.889 | 0.909 | 0.899 |
+| **Random Forest** | **0.949** | **0.936** | **1.000** | **0.967** |
+| Gradient Boosting | 0.898 | 0.932 | 0.932 | 0.932 |
 
-##  **Installation Steps**
+Tuned Random Forest: **0.937 mean cross-validation accuracy**.
 
-### 1️. Create a Virtual Environment
+**Limitations:** the dataset is small, and several recordings come from the same person, so a
+random split can place one person's recordings in both training and test sets. Real-world
+accuracy would likely be lower; a person-level split is the next improvement.
+
+## Run the app
 
 ```bash
+cd Frontend
 python -m venv venv
-source venv/bin/activate   # For Linux/Mac
-venv\Scripts\activate      # For Windows
-```
-
-### 2️. Install Dependencies
-
-```bash
+venv\Scripts\activate            # Linux/Mac: source venv/bin/activate
 pip install -r requirements.txt
+streamlit run app.py             # opens http://localhost:8501
 ```
 
-### 3️. Run the Notebook (Optional)
+To explore the workflow, open `Parkinson's Diseases.ipynb` in Jupyter or VS Code.
 
-Use Jupyter Notebook or VS Code.
+## Tech
 
----
+Python · pandas · NumPy · scikit-learn · Matplotlib / Seaborn · Streamlit
 
-##   **Running the Streamlit App**
+## Author
 
-```bash
-streamlit run app.py
-```
-
-After running, Streamlit will generate a localhost URL. Open it in your browser.
-
----
-Machine Learning Models Trained & Evaluated.
-The following Machine Learning models were trained and evaluated:
-.SVC
-.Decision Tree Classifier
-.Random Forest Classifier
-.Gradient boosting classifier
-
-##  **Model Performance**
-Random Forest Classifier was found to be the best performing Classifier with:
- 
-===Best model is: Random Forest ===
-
-.Accuracy: 0.9487
-
-.Precision: 0.9412
-
-.Recall: 1.0000
-
-.F1 Score: 0.9697
-```
-
-```
-
-4. Deploy on:
-   
-   * **Streamlit Cloud**
-    web: streamlit run app.py
----
-
-##   **Use Case**
-
-This project can assist:
-
-* Medical researchers
-* Health practitioners
-* Students learning ML in healthcare
-
----
-
-##   **Author**
-
-Developed by **Naina Shukla**.
-
----
+**Naina Shukla** · [GitHub](https://github.com/Naina7120284) · [LinkedIn](https://www.linkedin.com/in/naina-shukla-15406a260/)
